@@ -1,27 +1,14 @@
-"""
-Example main.py workflow to demonstrate usage of the TIGER model in Python.
-This mirrors the .Rmd you provided, including installation steps, data loading,
-and running the model.
-
-Ensure that:
-  - 'tiger.py' is in the same directory (or installed as a module).
-  - 'expr.rda' and 'prior.rda' contain the shapes (1780, 16) and (14, 1772), respectively.
-"""
-
 import os
 import pandas as pd
 import pyreadr  # conda install -c conda-forge pyreadr (to read R .rda)
-# from cmdstanpy import install_cmdstan  # only if you need to install locally
-from tiger import TIGER  # import the TIGER function we translated
+# from cmdstanpy import install_cmdstan  # only if need to install locally
+from tiger import TIGER
 import warnings
 warnings.simplefilter("ignore", category=FutureWarning)
 
 
 def main():
-    # 1. (Optional) Install cmdstan if you do not already have it:
-    # install_cmdstan()
-
-    # 2. Load data from .rda
+    # 1. Load data from .rda
     # The .rda might contain multiple objects; check which ones are needed
     prior_rda = pyreadr.read_r('../data/CollecTRI_prior.rda')  # path to your prior.rda
     expr_rda = pyreadr.read_r('../data/trimmed_holland_rna_expr.rda')    # path to your expr.rda
@@ -33,7 +20,7 @@ def main():
     # In R code, prior has shape (14 x 1772), expr has shape (1780 x 16).
     # Usually after read, you'll get a DataFrame with the same row/col structure.
 
-    # 3. Run TIGER with default parameters, for instance "method=MCMC", signed=False
+    # 2. Run TIGER with default parameters, for instance "method=MCMC", signed=False
     results = TIGER(
         TFexpressed=False,
         expr=expr_df,
@@ -43,14 +30,14 @@ def main():
         seed=42
     )
 
-    # 4. Print or inspect results
+    # 3. Print or inspect results
     print("TFA score in the first 3 samples:")
     print(results["Z"].iloc[:, 0:3])  # Z is (TFs, samples), show first 3 samples
 
     print("W matrix (first 5 TFs x first 10 genes):")
     print(results["W"].iloc[0:10, 0:5])
 
-    # Optionally save them to disk
+    # 4. save to disk
     results["W"].to_csv("W_estimated.csv")
     results["Z"].to_csv("Z_estimated.csv")
 
@@ -60,7 +47,7 @@ if __name__ == "__main__":
 
 
 
-### RUN MULTIPLE TIMES:
+### IF WANNA RUN MULTIPLE TIMES:
 
 
 # import os
