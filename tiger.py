@@ -1,31 +1,10 @@
-"""
-TIGER: A translation of the original R code into Python (cmdstanpy).
-Author: Chen Chen (Original R), [Your Name for Python translation]
-Date Created (Python version): 2025-01-10
-
-Email: cchen22@arizona.edu
-
-Dependencies:
-    pandas (for DataFrame)
-    numpy
-    cmdstanpy
-    arviz (optional, for psis-loo if you want to replicate the R "loo" behavior)
-    genenet-like partial correlation function in Python (if you want exactly the same prior.pp logic)
-"""
-
 import numpy as np
 import pandas as pd
 import cmdstanpy
 import gc
 import warnings
 import time
-# If you need advanced LOO features in Python, consider installing ArviZ (pip install arviz)
-# import arviz as az
 
-
-# -----------------------------------------------------------------------------------
-# The STAN model code, preserving the original lines from the R string object TIGER_C
-# -----------------------------------------------------------------------------------
 TIGER_C_STAN = r'''
 data {
   int<lower=0> n_genes;                       // Number of genes
